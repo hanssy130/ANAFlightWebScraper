@@ -1,14 +1,17 @@
+from datetime import date
 from bs4 import BeautifulSoup
 import pandas as pd
 import requests
 
+# Grabs the webpage.
 url = 'https://flights.ana.co.jp/en-ca/flights-from-vancouver-to-tokyo'
-
 page = requests.get(url)
 soup = BeautifulSoup(page.content, 'html.parser')
 
+# Grabs the "Vancouver (YVR) to Tokyo (TYO) Top Deals" section.
 orderedList = soup.find('ol', class_='clearfix')
 
+# Builds the values.
 codeList = []
 for routeCode in orderedList.find_all('p', class_='fare-atom-route'):
     codeList.append(routeCode.text)
@@ -26,9 +29,9 @@ for prices in orderedList.find_all('span', class_='fare-atom-price-total-price')
     priceSaved = int(prices.text.replace(',', ''))
     pricesList.append(priceSaved)
 
+# Creates the dataframe.
 flightDict = {"Airports": codeList, "Departure Date": datesGoingList, "Arrival Date": datesReturnList,
               "Price": pricesList}
-
 flightDict_df = pd.DataFrame.from_dict(flightDict, orient='index').T
-
-flightDict_df.to_csv('flightinfo.csv')
+dateToday = str(date.today())
+flightDict_df.to_csv('ANA_TopDeals_' + dateToday + '.csv')
