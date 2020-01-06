@@ -33,13 +33,9 @@ def main():
         pricesList.append(priceSaved)
 
     # Creates the dictionary.
-    flightDict = {"Airports": codeList, "Departure Date": datesGoingList, "Arrival Date": datesReturnList,
-                  "Price": pricesList}
-
-    # Creates the dataframe.
-    flightDict_df = pd.DataFrame.from_dict(flightDict, orient='index').T
     dateToday = str(date.today())
-    flightDict_df.to_csv('ANA_TopDeals_' + dateToday + '.csv')
+    flightDict = {"Airports": codeList, "DepDate": datesGoingList, "ArrDate": datesReturnList,
+                  "Price": pricesList, "Date": [dateToday, dateToday, dateToday, dateToday, dateToday, dateToday]}
 
     # Uploads Database to Firebase.
     FBConn = firebase.FirebaseApplication("https://anatopdeals-d3506.firebaseio.com/", None)
@@ -47,7 +43,4 @@ def main():
 
     result = FBConn.post('/FlightData/', data_to_upload)
 
-while(True):
-    #Reruns code daily.
-    main()
-    time.sleep(86400)
+main()
