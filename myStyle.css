@@ -1,0 +1,47 @@
+/* myStyle.css */
+body {
+    background-color: white;
+    color:black;
+    font-family: 'Myriad Pro', 'Segoe UI', 'Helvetica', 'Arial', 'Verdana', 'Roboto', 'Droid Sans', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'HiraKakuProN-W3', 'Hiragino Kaku Gothic Pro', 'HiraKakuPro-W3', 'Noto Sans CJK JP', 'Meiryo', 'Osaka', 'MS PGothic', 'sans-serif';
+   }
+h1 {
+    background-color: #13448f;
+    color: white;
+    text-align: center;
+    padding: 2ch;
+}
+p {
+    background-color: #FFFF33;
+    color: black;
+    text-align: right;
+    border: 3px groove #FFFF33;
+}
+
+a {
+    font-size: 10pt;
+}
+
+div.link {
+    text-align: center;
+}
+
+table {
+    text-align: center;
+    margin-left:auto; 
+    margin-right:auto;
+    /* font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif; */
+    font-size: 10pt;
+}
+
+td {
+    padding: 1ch;
+}
+
+#app {
+    margin-left:auto; 
+    margin-right:auto;
+}
+
+div {
+    text-align: center;
+}

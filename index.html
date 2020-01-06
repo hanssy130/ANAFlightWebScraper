@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>ANA Flight Web Scraper</title>
+    <link rel="stylesheet" type="text/css" href="myStyle.css">
+</head>
+<body>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyB-8VQtfeV8AtjDnTshYXkVuQYkY_6d_H8",
+            authDomain: "anatopdeals-d3506.firebaseapp.com",
+            databaseURL: "https://anatopdeals-d3506.firebaseio.com",
+            projectId: "anatopdeals-d3506",
+            storageBucket: "anatopdeals-d3506.appspot.com",
+            messagingSenderId: "285829871154",
+            appId: "1:285829871154:web:b3b5a4aba82b6aa23c2e2b",
+            measurementId: "G-T7FXJKBC3J"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+    <h1>All Nippon Airways Top Deals History</h1>
+    <h4><center>Review ANA's best round-trip flights between Vancouver and Tokyo.</center></h4>
+    <div class="link">
+        <a href="https://flights.ana.co.jp/en-ca/flights-from-vancouver-to-tokyo">Source</a>
+    </div>
+    <br>
+    <div id="app">
+    </div>
+    <script>
+        // Get a reference to the database service
+        var database = firebase.database();
+
+        // Get Elements
+        const preObject = document.getElementById('object');
+        const ulList = document.getElementById('list');
+
+        // Create references
+        const dbRefObject = database.ref().child('FlightData');
+        const dbRefList = dbRefObject.child('LxhND0mHByYhu1hv28M');
+        // // Sync object changes
+        // dbRefObject.on('value', snap => console.log(snap.val()));
+
+        // dbRefObject.on('value', snap => {
+        //   var para = document.createElement("p");
+        //   para.id = "name"
+        //   document.getElementById("app").appendChild(para);
+        //   var node = document.createTextNode(doc.data().name);
+        //   para.appendChild(node);
+        // })
+
+        // // Sync list changes
+        // dbRefList.on('child_added', snap =>
+        //     console.log(snap.val())
+        // )
+        dbRefObject.on('value', gotData);
+        function gotData(data) {
+            var info = data.val();
+            var keys = Object.keys(info);
+            console.log(keys)
+            var table = '';
+            for (var i = keys.length - 1; i >= 0; i--) {    
+                var k = keys[i]
+                var Airports = info[k].Airports;
+                var DepDate = info[k].DepDate;
+                var ArrDate = info[k].ArrDate;
+                var Price = info[k].Price;
+                var Date = info[k].Date[0];           
+                // console.log(Airports, DepDate, ArrDate, Price)             
+                table += '<div><b>' + Date + '</b></div>' + '<table border=1>';
+                    table += '<tr><td><b>Airports</b></td><td><b>Departure Date</b></td><td><b>Return Date</b></td><td><b>Price</b></td></tr>'
+                    for (var d = 0; d <= 5; d++) {
+                        table += '<tr>';
+                        table += '<td>' + Airports[d] + '</td>';
+                        table += '<td>' + DepDate[d] + '</td>';
+                        table += '<td>' + ArrDate[d] + '</td>';
+                        table += '<td>$' + Price[d] + '</td>';
+                        table += '</tr>'
+                    }
+                table += '</table><br>'
+                }
+            var tablediv = document.createElement("div");
+            tablediv.innerHTML = table;
+            document.getElementById("app").appendChild(tablediv);
+            var datediv = document.createElement("div");
+            // document.write('<div>' + table + '</div>')
+        }
+        console.log(dbRefObject)
+    </script>
+</body>
+</html>
